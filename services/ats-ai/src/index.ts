@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+<<<<<<< HEAD
 import { scoreResume, suggestImprovements } from './ats-logic';
+>>>>>>> feat/ats-scoring-logic
 
 dotenv.config();
 
