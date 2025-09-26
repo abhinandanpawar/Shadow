@@ -1,6 +1,10 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
+const path = require('path');
+
 module.exports = {
-  preset: 'ts-jest',
+  transform: {
+    '^.+\.(ts|tsx)$': ['babel-jest', { configFile: path.resolve(__dirname, 'babel.config.js') }],
+  },
   testEnvironment: 'node',
   verbose: true,
   roots: ['<rootDir>'],
