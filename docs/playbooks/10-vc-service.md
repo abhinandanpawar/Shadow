@@ -49,10 +49,10 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "did-jwt": "^8.0.2",
-        "did-jwt-vc": "^4.1.0",
+    "did-jwt-vc": "^4.0.16",
         "dids": "^4.0.1",
         "key-did-provider-ed25519": "^4.0.0",
-        "key-did-resolver": "^3.1.2"
+    "key-did-resolver": "^4.0.0"
       },
       "devDependencies": {
         "typescript": "^5.4.5",
