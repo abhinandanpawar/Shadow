@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-// import { scoreResume, suggestImprovements } from './ats-logic';
+import { scoreResume, suggestImprovements } from './ats-logic';
 
 dotenv.config();
 
@@ -18,17 +18,25 @@ app.post('/api/ats/score', async (req, res) => {
   if (!resume || !jobDescription) {
     return res.status(400).json({ error: 'Resume and Job Description are required.' });
   }
-  // TODO: Agent will implement scoring logic here.
-  return res.status(501).json({ message: 'Scoring logic not yet implemented.' });
+  try {
+    const result = await scoreResume(resume, jobDescription);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to score resume.' });
+  }
 });
 
 app.post('/api/ai/suggest', async (req, res) => {
-  const { resume, section } = req.body;
+  const { resume, section, context } = req.body;
   if (!resume || !section) {
     return res.status(400).json({ error: 'Resume and section are required.' });
   }
-  // TODO: Agent will implement suggestion logic here.
-  return res.status(501).json({ message: 'Suggestion logic not yet implemented.' });
+  try {
+    const result = await suggestImprovements({ resume, section, context });
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to get suggestions.' });
+  }
 });
 
 // --- Server Start ---
