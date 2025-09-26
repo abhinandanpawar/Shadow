@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { generatePdf } from './pdf-generator';
+// import { generatePdf } from './pdf-generator'; // Logic to be added by agent
 // import { generateLatex } from './latex-generator'; // Logic to be added by agent
 
 const app = express();
@@ -10,14 +10,9 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json({ limit: '10mb' })); // Increase limit for resume data
 
 app.post('/api/export/pdf', async (req, res) => {
-  try {
-    const pdfBuffer = await generatePdf(req.body.resume);
-    res.setHeader('Content-Type', 'application/pdf');
-    res.send(pdfBuffer);
-  } catch (error) {
-    console.error('Failed to generate PDF:', error);
-    res.status(500).json({ error: 'Failed to generate PDF.' });
-  }
+  // TODO: Agent will implement PDF generation logic here.
+  console.log('PDF export request received.');
+  res.status(501).json({ message: 'PDF export logic not yet implemented.' });
 });
 
 app.post('/api/export/latex', async (req, res) => {

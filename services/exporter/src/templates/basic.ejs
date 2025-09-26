@@ -10,57 +10,12 @@
 </head>
 <body>
   <h1><%= resume.basics.name %></h1>
-  <p>Email: <%= resume.basics.email %> | Phone: <%= resume.basics.phone %> | Website: <a href="<%= resume.basics.url %>"><%= resume.basics.url %></a></p>
-  <p>Location: <%= resume.basics.location.city %>, <%= resume.basics.location.region %>, <%= resume.basics.location.countryCode %></p>
+  <p>Email: <%= resume.basics.email %></p>
   <hr>
-
   <h2>Summary</h2>
   <p><%= resume.basics.summary %></p>
 
-  <% if (resume.work && resume.work.length) { %>
-  <h2>Work Experience</h2>
-  <% resume.work.forEach(function(job) { %>
-    <h3><%= job.position %> at <%= job.name %></h3>
-    <p><%= job.startDate %> - <%= job.endDate || 'Present' %></p>
-    <p><em><%= job.summary %></em></p>
-    <ul>
-      <% job.highlights.forEach(function(highlight) { %>
-        <li><%= highlight %></li>
-      <% }); %>
-    </ul>
-  <% }); %>
-  <% } %>
-
-  <% if (resume.education && resume.education.length) { %>
-  <h2>Education</h2>
-  <% resume.education.forEach(function(edu) { %>
-    <h3><%= edu.institution %></h3>
-    <p><%= edu.studyType %>, <%= edu.area %></p>
-    <p><%= edu.startDate %> - <%= edu.endDate %></p>
-  <% }); %>
-  <% } %>
-
-  <% if (resume.skills && resume.skills.length) { %>
-  <h2>Skills</h2>
-  <ul>
-    <% resume.skills.forEach(function(skill) { %>
-      <li><strong><%= skill.name %>:</strong> <%= skill.keywords.join(', ') %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-
-  <% if (resume.projects && resume.projects.length) { %>
-  <h2>Projects</h2>
-  <% resume.projects.forEach(function(project) { %>
-    <h3><a href="<%= project.url %>"><%= project.name %></a></h3>
-    <p><%= project.description %></p>
-    <ul>
-      <% project.highlights.forEach(function(highlight) { %>
-        <li><%= highlight %></li>
-      <% }); %>
-    </ul>
-  <% }); %>
-  <% } %>
+  <!-- Agent will implement full template logic here -->
 
 </body>
 </html>
