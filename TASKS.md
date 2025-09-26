@@ -84,6 +84,7 @@
 ## Phase 2: Core Services Implementation
 
 ### **Task 2.1: Implement Parser Service Logic (Manual Integration)**
+-   **Status:** [COMPLETED]
 -   **Objective:** Integrate the OpenResume parsing logic into the parser service.
 -   **Package:** `@resume-platform/parser-service`
 -   **Playbook Reference:** `docs/playbooks/05-parser-service.md` (Specifically, follow the "Manual Integration Guide" in Step 2.0)
@@ -95,6 +96,7 @@
     4.  The service passes all verification steps outlined in the playbook.
 
 ### **Task 2.2: Implement PDF Exporter Logic**
+-   **Status:** [COMPLETED]
 -   **Objective:** Implement the PDF generation logic in the exporter service.
 -   **Package:** `@resume-platform/exporter-service`
 -   **Playbook Reference:** `docs/playbooks/07-exporter-service.md`
@@ -119,6 +121,7 @@
 ## Phase 3: AI & Advanced Services Implementation (Parallelizable)
 
 ### **Task 3.1: Implement ATS Scoring Logic**
+-   **Status:** [COMPLETED]
 -   **Objective:** Implement the ATS scoring and keyword analysis logic.
 -   **Package:** `@resume-platform/ats-ai-service`
 -   **Playbook Reference:** `docs/playbooks/06-ats-ai-service.md`
@@ -128,6 +131,7 @@
     2.  The logic in the `/api/ats/score` endpoint is implemented to compare resume text against a job description and return a score and keyword gap analysis.
 
 ### **Task 3.2: Implement AI Suggestion Logic**
+-   **Status:** [COMPLETED]
 -   **Objective:** Implement the AI-powered content suggestion logic.
 -   **Package:** `@resume-platform/ats-ai-service`
 -   **Playbook Reference:** `docs/playbooks/06-ats-ai-service.md`
@@ -137,6 +141,7 @@
     2.  The logic in the `/api/ai/suggest` endpoint is implemented to construct a prompt, send it to the LLM, and return the suggestions.
 
 ### **Task 3.3: Implement Skills Normalization Logic**
+-   **Status:** [COMPLETED]
 -   **Objective:** Implement the skill normalization logic using the ESCO API.
 -   **Package:** `@resume-platform/skills-service`
 -   **Playbook Reference:** `docs/playbooks/08-skills-service.md`
