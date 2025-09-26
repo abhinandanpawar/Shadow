@@ -23,7 +23,7 @@ app.post('/api/ats/score', async (req, res) => {
 });
 
 app.post('/api/ai/suggest', async (req, res) => {
-  const { resume, section, context } = req.body;
+  const { resume, section } = req.body;
   if (!resume || !section) {
     return res.status(400).json({ error: 'Resume and section are required.' });
   }
