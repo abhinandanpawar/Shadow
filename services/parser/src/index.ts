@@ -1,8 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
-// import { parseResume } from '@openresume/parser'; // Logic will be added by agent
-// import { resumeSchema } from '@resume-platform/schema'; // Logic will be added by agent
+import { parseResumeFromFile } from './lib';
+import { resumeSchema } from '@resume-platform/schema';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -19,9 +19,24 @@ app.post('/api/import', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded.' });
   }
-  // TODO: Agent will implement parsing and validation logic here.
-  console.log('File received, parsing logic to be implemented.');
-  return res.status(501).json({ message: 'Parsing logic not yet implemented.' });
+
+  try {
+    const resume = await parseResumeFromFile(req.file.buffer);
+    const validationResult = resumeSchema.safeParse(resume);
+
+    if (validationResult.success) {
+      return res.status(200).json(validationResult.data);
+    } else {
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: validationResult.error.flatten(),
+      });
+    }
+  } catch (error) {
+    console.error('Error parsing resume:', error);
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    return res.status(500).json({ error: 'Error parsing resume.', details: message });
+  }
 });
 
 // --- Server Start ---

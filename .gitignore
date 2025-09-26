@@ -1,6 +1,9 @@
 # Dependencies
 node_modules
 /.pnpm-store
+apps/*/node_modules/
+packages/*/node_modules/
+services/*/node_modules/
 
 # Build artifacts
 /dist
