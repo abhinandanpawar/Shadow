@@ -9,6 +9,7 @@
 ## Phase 0: Foundational Tooling & DX (Do First)
 
 ### **Task 0.1: Set Up and Configure the Mock API Server**
+-   **Status:** [COMPLETED]
 -   **Objective:** Enable parallel frontend development by creating a mock API server.
 -   **Package:** `apps/web`
 -   **Playbook Reference:** `docs/playbooks/12-mock-server-setup.md`
@@ -20,6 +21,7 @@
     5.  Frontend requests to API endpoints are intercepted and receive the correct mock responses.
 
 ### **Task 0.2: Build and Deploy the Sentence-Transformer Service**
+-   **Status:** [COMPLETED]
 -   **Objective:** Create the Python-based microservice for generating vector embeddings.
 -   **Package:** `@resume-platform/sentence-transformer-service`
 -   **Playbook Reference:** `docs/playbooks/13-sentence-transformer-service.md`
@@ -30,6 +32,7 @@
     4.  When the container is run, the `/api/ai/embed` endpoint correctly accepts text and returns a 384-dimensional vector embedding.
 
 ### **Task 0.3: Set Up and Configure the Testing Framework**
+-   **Status:** [COMPLETED]
 -   **Objective:** Integrate Jest and React Testing Library into the monorepo.
 -   **Package:** Root-level and all sub-packages.
 -   **Playbook Reference:** `docs/playbooks/14-testing-setup.md`
@@ -40,6 +43,7 @@
     4.  The example test for the `Button` component in `@resume-platform/ui` passes when `pnpm test` is run from the root.
 
 ### **Task 0.4: Set Up and Configure the CI Pipeline**
+-   **Status:** [COMPLETED]
 -   **Objective:** Create the GitHub Actions workflow for continuous integration.
 -   **Package:** Root-level (`.github/workflows`)
 -   **Playbook Reference:** `docs/playbooks/15-ci-pipeline-setup.md`
@@ -53,6 +57,7 @@
 ## Phase 1: Foundational Packages
 
 ### **Task 1.1: Complete the Core Schema Package**
+-   **Status:** [COMPLETED]
 -   **Objective:** Fully implement all remaining Zod schemas for the JSON Resume standard.
 -   **Package:** `@resume-platform/schema`
 -   **Playbook Reference:** `docs/playbooks/02-core-schema-package.md`
@@ -64,6 +69,7 @@
     4.  All type checks and linter commands pass for the package.
 
 ### **Task 1.2: Build Out the Shared UI Library**
+-   **Status:** [COMPLETED]
 -   **Objective:** Create a comprehensive set of reusable React components for the application.
 -   **Package:** `@resume-platform/ui`
 -   **Playbook Reference:** `docs/playbooks/03-shared-ui-package.md`
