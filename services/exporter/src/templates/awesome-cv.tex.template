@@ -1,0 +1,24 @@
+% Awesome-CV Template
+% This is a placeholder template. The assigned agent will complete the full template.
+\documentclass{awesome-cv}
+
+%-------------------------------------------------------------------------------
+%	CONFIGURATIONS
+%-------------------------------------------------------------------------------
+% Fill in your information.
+%-------------------------------------------------------------------------------
+\name{<%= resume.basics.name %>}{<%= resume.basics.label %>}
+\email{<%= resume.basics.email %>}
+\homepage{<%= resume.basics.url %>}
+\github{<%= resume.basics.profiles.find(p => p.network === 'GitHub')?.username %>}
+\linkedin{<%= resume.basics.profiles.find(p => p.network === 'LinkedIn')?.username %>}
+
+%-------------------------------------------------------------------------------
+\begin{document}
+
+% Create the header
+\makecvheader
+
+% Agent will implement the logic to render work, education, etc. sections here.
+
+\end{document}

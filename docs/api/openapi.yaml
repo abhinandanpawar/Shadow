@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Resume Platform API
+  description: The official API specification for all microservices in the resume platform.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development gateway
+
+paths:
+  /import:
+    post:
+      summary: Parse a resume file
+      description: Uploads a PDF or DOCX file to the parser service and returns a structured JSON Resume object.
+      tags:
+        - Parser
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful parsing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonResume'
+        '400':
+          description: Bad request (e.g., no file uploaded)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /export/pdf:
+    post:
+      summary: Export resume as PDF
+      description: Takes a JSON Resume object and returns a rendered PDF file.
+      tags:
+        - Exporter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonResume'
+      responses:
+        '200':
+          description: Successful PDF generation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ats/score:
+    post:
+      summary: Score a resume against a job description
+      description: Provides an ATS score based on keyword matching and other heuristics.
+      tags:
+        - ATS & AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resume:
+                  $ref: '#/components/schemas/JsonResume'
+                jobDescription:
+                  type: string
+      responses:
+        '200':
+          description: Successful scoring
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  overallScore:
+                    type: integer
+                  keywordCoverage:
+                    type: object
+                    properties:
+                      found:
+                        type: array
+                        items:
+                          type: string
+                      missing:
+                        type: array
+                        items:
+                          type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /skills/normalize:
+    post:
+      summary: Normalize a list of skills
+      description: Normalizes skills against the ESCO/O*NET taxonomy.
+      tags:
+        - Skills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skills:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Successful normalization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizedSkillsResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /search:
+    get:
+      summary: Search across resumes
+      description: Performs a hybrid lexical and semantic search.
+      tags:
+        - Search
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vc/issue:
+    post:
+      summary: Issue a Verifiable Credential
+      description: Creates and signs a new W3C Verifiable Credential in JWT format.
+      tags:
+        - Verifiable Credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subjectDid:
+                  type: string
+                credentialPayload:
+                  type: object
+      responses:
+        '200':
+          description: The issued VC JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vcJwt:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /portfolio/github/sync:
+    post:
+      summary: Sync GitHub portfolio data
+      description: Fetches public repository and user data from GitHub.
+      tags:
+        - Portfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully synced data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitHubData'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    JsonResume:
+      type: object
+      properties:
+        basics:
+          type: object
+          properties:
+            name:
+              type: string
+            label:
+              type: string
+            email:
+              type: string
+              format: email
+            summary:
+              type: string
+        work:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              position:
+                type: string
+              summary:
+                type: string
+        # ... Other JSON Resume sections would be fully defined here
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A user-friendly error message.
+    NormalizedSkillsResponse:
+      type: object
+      properties:
+        normalized:
+          type: array
+          items:
+            type: object
+            properties:
+              original:
+                type: string
+              standard:
+                type: string
+              escoUri:
+                type: string
+                format: uri
+    GitHubData:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            avatarUrl:
+              type: string
+              format: uri
+            bio:
+              type: string
+        repos:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+                format: uri
+              description:
+                type: string
+              stars:
+                type: integer
+              language:
+                type: string
