@@ -107,6 +107,7 @@
     3.  The `/api/export/pdf` endpoint returns a valid PDF file.
 
 ### **Task 2.3: Implement LaTeX Exporter Logic**
+-   **Status:** [COMPLETED]
 -   **Objective:** Implement the LaTeX file generation logic.
 -   **Package:** `@resume-platform/exporter-service`
 -   **Playbook Reference:** `docs/playbooks/07-exporter-service.md`
