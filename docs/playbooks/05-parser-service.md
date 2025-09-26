@@ -16,6 +16,40 @@
 
 ## 2. Step-by-Step Implementation Guide
 
+### **Step 2.0: Manual Integration Guide for OpenResume Parser**
+
+**Objective:** To adapt the core parsing logic from the `xitanggg/open-resume` GitHub repository for use in this service.
+
+**Process:**
+
+1.  **Clone the Source Repository:** In a separate, temporary directory outside of this project, clone the OpenResume repository.
+    ```bash
+    git clone https://github.com/xitanggg/open-resume.git
+    ```
+
+2.  **Identify Core Logic:** The key files for parsing are located in `open-resume/src/lib/parser/`. The most important file is `process-resume.ts`, which orchestrates the parsing process. It relies on other utilities in that directory for things like text cleaning and sectioning.
+
+3.  **Copy Relevant Files:**
+    *   Create a new directory in our service: `services/parser/src/lib/`.
+    *   Copy the entire contents of the `open-resume/src/lib/parser/` directory from the cloned repository into our new `services/parser/src/lib/` directory.
+
+4.  **Adapt the Code:**
+    *   The copied code is written for a Next.js environment and may have dependencies on Next.js-specific features or other parts of the OpenResume codebase.
+    *   The assigned agent's primary task is to refactor this code so that it can run in a standard Node.js environment. This will primarily involve:
+        *   Creating a main entry point function, for example, `parseResumeFromFile(fileBuffer: Buffer): Promise<JsonResume>`.
+        *   Removing any React/Next.js specific code.
+        *   Ensuring all necessary helper functions are correctly imported within the new `lib` directory.
+
+5.  **Install Additional Dependencies:**
+    *   The OpenResume parser relies on `pdfjs-dist`. The agent must add this dependency to the `services/parser/package.json` file.
+    *   **Command:** `pnpm --filter @resume-platform/parser-service add pdfjs-dist`
+
+6.  **Integrate with the Express Endpoint:**
+    *   In `services/parser/src/index.ts`, import the newly created `parseResumeFromFile` function.
+    *   Call this function from within the `/api/import` endpoint, passing it the `req.file.buffer`.
+
+This provides a clear, actionable plan for integrating the parsing logic.
+
 ### **Step 2.1: Create Package Directory**
 
 1.  **Action:** Create the directory for the new service.
