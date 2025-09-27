@@ -1,73 +1,50 @@
 "use client";
 
-import { useResumeStore } from "@/store/resume";
+import { useState } from "react";
 import { BasicsForm } from "@/components/forms/BasicsForm";
+import { EducationForm } from "@/components/forms/EducationForm";
+import { ProjectsForm } from "@/components/forms/ProjectsForm";
+import { SkillsForm } from "@/components/forms/SkillsForm";
 import { WorkForm } from "@/components/forms/WorkForm";
+import { Preview } from "@/components/preview/Preview";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@resume-platform/ui/components/Card";
+  PreviewThemeSwitcher,
+  themes,
+} from "@/components/preview/PreviewThemeSwitcher";
+import { ResumeManager } from "@/components/ResumeManager";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export default function EditorPage() {
-  const resume = useResumeStore((state) => state.resume);
+  const [previewTheme, setPreviewTheme] = useState(themes[0]);
 
   return (
-    <main className="container mx-auto grid grid-cols-12 gap-8 py-8">
-      <div className="col-span-12 lg:col-span-8">
-        <div className="space-y-6">
-          <BasicsForm />
-          <WorkForm />
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Education</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500">
-                Education form will be implemented here.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Skills</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500">
-                Skills form will be implemented here.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Projects</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500">
-                Projects form will be implemented here.
-              </p>
-            </CardContent>
-          </Card>
+    <div>
+      <header className="border-b">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <ResumeManager />
+          <ThemeSwitcher />
         </div>
-      </div>
-      <div className="col-span-12 lg:col-span-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Live Preview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-lg bg-gray-100 p-4">
-              <pre className="overflow-x-auto whitespace-pre-wrap text-xs">
-                {JSON.stringify(resume, null, 2)}
-              </pre>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+      </header>
+      <main className="container mx-auto grid grid-cols-12 gap-8 py-8">
+        <div className="col-span-12 lg:col-span-7">
+          <div className="space-y-6">
+            <BasicsForm />
+            <WorkForm />
+            <EducationForm />
+            <SkillsForm />
+            <ProjectsForm />
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-5">
+          <div className="sticky top-8 space-y-4">
+            <PreviewThemeSwitcher
+              currentTheme={previewTheme}
+              onThemeChange={setPreviewTheme}
+            />
+            <Preview theme={previewTheme} />
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
