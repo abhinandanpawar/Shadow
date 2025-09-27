@@ -21,7 +21,8 @@ app.post('/api/import', upload.single('file'), async (req, res) => {
   }
 
   try {
-    const resume = await parseResumeFromFile(req.file.buffer);
+    // Pass the entire file object, which includes the buffer and mimetype
+    const resume = await parseResumeFromFile(req.file);
     const validationResult = resumeSchema.safeParse(resume);
 
     if (validationResult.success) {

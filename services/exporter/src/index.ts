@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { generatePdf } from './pdf-generator';
 import { generateLatex } from './latex-generator';
+import { generateHtml } from './html-generator';
 
 const app = express();
 const port = process.env.PORT || 3003;
@@ -30,6 +31,18 @@ app.post('/api/export/latex', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Failed to generate LaTeX:', error);
     res.status(500).json({ error: 'Failed to generate LaTeX file.' });
+  }
+});
+
+app.post('/api/export/html', async (req: Request, res: Response) => {
+  try {
+    const theme = req.body.theme || 'Classic';
+    const htmlString = await generateHtml(req.body.resume, theme);
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlString);
+  } catch (error) {
+    console.error('Failed to generate HTML:', error);
+    res.status(500).json({ error: 'Failed to generate HTML file.' });
   }
 });
 

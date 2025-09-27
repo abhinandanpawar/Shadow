@@ -45,6 +45,7 @@ interface ResumeStoreState {
   activeIndex: number;
   // Actions
   addResume: () => void;
+  addExistingResume: (resume: Resume) => void;
   removeResume: (index: number) => void;
   switchResume: (index: number) => void;
   // Individual section actions (delegating to the active resume)
@@ -91,6 +92,15 @@ export const useResumeStore = create<ResumeStoreState>((set) => ({
   addResume: () =>
     set((state) => {
       const newResumes = [...state.resumes, createInitialResume()];
+      return {
+        resumes: newResumes,
+        activeIndex: newResumes.length - 1,
+      };
+    }),
+
+  addExistingResume: (resume) =>
+    set((state) => {
+      const newResumes = [...state.resumes, resume];
       return {
         resumes: newResumes,
         activeIndex: newResumes.length - 1,
