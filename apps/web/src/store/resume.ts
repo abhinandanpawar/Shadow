@@ -40,15 +40,71 @@ const createInitialResume = (): Resume => ({
   projects: [],
 });
 
+// Types for the ATS feature, adapted from Resume-Matcher
+export interface PersonalInfo {
+    name: string;
+    title?: string;
+    email: string;
+    phone: string;
+    location: string;
+    website?: string;
+    linkedin?: string;
+    github?: string;
+}
+
+export interface ExperienceEntry {
+    id: number;
+    title: string;
+    company: string;
+    location?: string;
+    years?: string;
+    description: string[];
+}
+
+export interface EducationEntry {
+    id: number;
+    institution: string;
+    degree: string;
+    years?: string;
+    description?: string;
+}
+
+export interface ResumePreview {
+    personalInfo: PersonalInfo;
+    summary?: string;
+    experience: ExperienceEntry[];
+    education: EducationEntry[];
+    skills: string[];
+}
+
+export interface Data {
+    request_id: string;
+    resume_id: string;
+    job_id: string;
+    original_score: number;
+    new_score: number;
+    resume_preview: ResumePreview;
+    details?: string;
+    commentary?: string;
+    improvements?: {
+        suggestion: string;
+        lineNumber?: string | number;
+    }[];
+}
+
+export interface ImprovedResult {
+    data: Data;
+}
+
 interface ResumeStoreState {
   resumes: Resume[];
   activeIndex: number;
+  improvedResult: ImprovedResult | null;
   // Actions
   addResume: () => void;
   addExistingResume: (resume: Resume) => void;
   removeResume: (index: number) => void;
   switchResume: (index: number) => void;
-  // Individual section actions (delegating to the active resume)
   updateBasics: (basics: Partial<Basics>) => void;
   addWork: () => void;
   updateWork: (index: number, work: Partial<Work>) => void;
@@ -62,9 +118,10 @@ interface ResumeStoreState {
   addProject: () => void;
   updateProject: (index: number, project: Partial<Project>) => void;
   removeProject: (index: number) => void;
+  setImprovedResult: (result: ImprovedResult | null) => void;
 }
 
-const getInitialState = (): { resumes: Resume[]; activeIndex: number } => {
+const getInitialState = (): { resumes: Resume[]; activeIndex: number; improvedResult: ImprovedResult | null } => {
   try {
     if (typeof window !== "undefined") {
       const item = window.localStorage.getItem("resume-store");
@@ -75,7 +132,8 @@ const getInitialState = (): { resumes: Resume[]; activeIndex: number } => {
           Array.isArray(parsed.resumes) &&
           typeof parsed.activeIndex === "number"
         ) {
-          return parsed;
+          // Return persisted state and default for new state
+          return { ...parsed, improvedResult: null };
         }
       }
     }
@@ -83,7 +141,7 @@ const getInitialState = (): { resumes: Resume[]; activeIndex: number } => {
     console.error("Error reading from localStorage", error);
   }
   // Return default state if nothing in localStorage or if running on server
-  return { resumes: [createInitialResume()], activeIndex: 0 };
+  return { resumes: [createInitialResume()], activeIndex: 0, improvedResult: null };
 };
 
 export const useResumeStore = create<ResumeStoreState>((set) => ({
@@ -280,6 +338,8 @@ export const useResumeStore = create<ResumeStoreState>((set) => ({
       newResumes[state.activeIndex] = { ...activeResume, projects };
       return { resumes: newResumes };
     }),
+
+  setImprovedResult: (result) => set({ improvedResult: result }),
 }));
 
 // Subscribe to store changes and persist to localStorage
