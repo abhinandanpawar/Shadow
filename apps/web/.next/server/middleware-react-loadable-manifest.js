@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"../../../node_modules/.pnpm/msw@2.11.3_@types+node@20.19.17_typescript@5.9.2/node_modules/msw/lib/core/utils/internal/parseGraphQLRequest.mjs -> graphql\":{\"id\":\"../../../node_modules/.pnpm/msw@2.11.3_@types+node@20.19.17_typescript@5.9.2/node_modules/msw/lib/core/utils/internal/parseGraphQLRequest.mjs -> graphql\",\"files\":[]}}"
